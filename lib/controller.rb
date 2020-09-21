@@ -5,19 +5,31 @@ require "view"
 class Controller
 
 def create_gossip
-  potins = []
+# creation d'un instance pour stocker la class view
+ @view = View.new.create_gossip 
 
-  puts"ecrit ton Nom"
-  nom = gets.chomp
+ #cree un gossip a partir d'un hash dans la class view
+ gossip = Gossip.new(@view[:author],@view[:content])
+  
+ #sauvegarder dans une base de donné
+  gossip.save
 
-  puts "ecrit ton potin"
-  potin = gets.chomp
-  
-  gossip = Gossip.new(nom,potin)
-  potins << gossip
-  my_gossip = [potins].flatten.join("\n")
-  
-  my_gossip.gossip.save
 end
+
+def index_gossips
+	#stock les donner dans une Array
+	 goall = Gossip.all
+	
+	#demande a view d'afficher les potin
+	View.new.index_gossips(goall)
+	
+end
+def delete
+	num = View.new.delete
+	table =Gossip.all
+	tabdel = Gossip.del(table,num)
+	return tabdel
+end
+
 
 end
